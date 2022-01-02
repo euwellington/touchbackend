@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .title {
+            color: rgba(0,0,0,0.8);
+            text-align: center;
+            font-size: 13pt;
+            font-weight: 700;
+        }
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: center
+        }
+        .msg-title {
+            font-size: 10pt;
+            margin: 0;
+        }
+        .input {
+            padding: 10px;
+            font-size: 11pt;
+            align-self: center;
+            border-radius: 60px;
+            width: 350px;
+            border: 0;
+            outline: none;
+            height: 100px;
+        }
+        .button {
+            padding: 10px;
+            background-color: rgb(120, 13, 207);
+            color: white;
+            margin: 10px;
+            border: 0;
+            border-radius: 60px;
+            width: 100%;
+            transition: 0.2s;
+        }
+        .button:hover {
+            transition: 0.2s;
+            transform: scale(1.0500);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <script src="https://cdn.socket.io/4.4.0/socket.io.min.js" integrity="sha384-1fOn6VtTq3PWwfsOrk45LnYcGosJwzMHv+Xh/Jx5303FVOXzEnw0EpLv30mtjmlj" crossorigin="anonymous"></script>
+    <script>
+        const socket = io('https://touchbackend.herokuapp.com');
+        let texto = [];
+        socket.on('msg', (evento) => {
+            texto.push(evento);
+            document.getElementById("texto").innerHTML = texto.join('<br/>');
+        });
+        socket.on('evento', (evento) => {
+            console.log(evento);
+        });
+
+        function enviar(msg) {
+            socket.emit('msg', msg);
+            document.getElementById('msg').value = "";
+        }
+    </script>
+    <p class="title">TESTE SOCKET </p>
+
+    <div class="container">
+        <div>
+            <div>
+                <input class='input' id="msg" onchange="enviar(this.value)" placeholder="Escreva sua mensgaem aqui" />
+            </div>
+            <button type="button" onclick="enviar(this.value)" class="button">Enviar</button>
+            <div>
+                <p id='texto'></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
